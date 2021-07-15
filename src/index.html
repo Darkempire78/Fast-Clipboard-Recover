@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <ul id="clipboardContainer">
+        </ul>           
+    </body>
+
+    <script>
+        // window.api.send('updateSettings', {
+        //         user: user, 
+        //         server: server,
+        //         theme: theme
+        //     })
+    
+    
+    // ipcRenderer
+        window.api.receive('newClipboardText', (content) => {
+            let ul = document.getElementById("clipboardContainer");
+            let li = document.createElement("li");
+            let hr = document.createElement("hr");
+            let p = document.createElement("p");
+            p.onclick = () => {
+                navigator.clipboard.writeText(content)
+            }
+            p.classList = ["clipboardText"]
+            p.innerHTML = content.replace(/&/g, '&amp;')
+                                .replace(/"/g, '&quot;')
+                                .replace(/</g, '&lt;')
+                                .replace(/>/g, '&gt;');
+            li.appendChild(p);
+            li.appendChild(hr);
+            ul.prepend(li);
+        })
+    </script>
+</html>

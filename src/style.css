@@ -1,0 +1,59 @@
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    margin: 10px 0 0 0;
+}
+
+p {
+    margin: 0;
+}
+
+hr {
+    margin: 10px 0 0 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    padding: 0 0 10px 0;
+}
+
+/* Scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    /* background-color: #2f3136;  */
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-color: grey; 
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
+    background: #2f3136; 
+} */
+
+/*  */
+
+p.clipboardText {
+    padding: 0 10px 0 10px;
+    white-space:pre;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+p.clipboardText:hover {
+    background-color: gainsboro;
+}
