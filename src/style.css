@@ -58,6 +58,16 @@ p.clipboardText:hover {
     background-color: gainsboro;
 }
 
+img.clipboardImage {
+    padding: 0 10px 0 10px;
+    max-width: 420px;
+    cursor: pointer;
+}
+
+img.clipboardImage:hover {
+    filter: grayscale(50%);
+}
+
 /* Default mode  */
 @media (prefers-color-scheme: light) {}
 

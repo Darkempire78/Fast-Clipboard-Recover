@@ -14,7 +14,6 @@
         //         theme: theme
         //     })
     
-    
     // ipcRenderer
         window.api.receive('newClipboardText', (content) => {
             let ul = document.getElementById("clipboardContainer");
@@ -30,6 +29,21 @@
                                 .replace(/</g, '&lt;')
                                 .replace(/>/g, '&gt;');
             li.appendChild(p);
+            li.appendChild(hr);
+            ul.prepend(li);
+        })
+
+        window.api.receive('newClipboardImage', (content) => {
+            let ul = document.getElementById("clipboardContainer");
+            let li = document.createElement("li");
+            let hr = document.createElement("hr");
+            let img = document.createElement("img");
+            img.classList = ["clipboardImage"]
+            img.setAttribute("src", content);
+            img.onclick = () => {
+                window.api.send('pasteImageInTheClipboard', content)
+            }
+            li.appendChild(img);
             li.appendChild(hr);
             ul.prepend(li);
         })

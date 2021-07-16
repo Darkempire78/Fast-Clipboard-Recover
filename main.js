@@ -1,4 +1,4 @@
-const { app, nativeTheme, globalShortcut, clipboard, Tray, Menu } = require('electron');
+const { app, nativeTheme, globalShortcut, clipboard, Tray, Menu, nativeImage, ipcMain } = require('electron');
 const { menubar } = require("menubar");
 const path = require('path');
 const Store = require('electron-store');
@@ -7,6 +7,7 @@ const store = new Store();
 
 let mb;
 let lastClipboardText;
+let lastClipboardImage;
 const iconPath = path.join(__dirname, "icons", "clipboardLight.png");
 
 const handleThemeClick = (menuItem, browserWindow, event) => {
@@ -66,25 +67,36 @@ app.on('ready', () => {
     // create shortcut
 	globalShortcut.register('CommandOrControl+Shift+X', () => {
         if (mb._isVisible) {
-            mb.hideWindow()
+            mb.hideWindow();
         } else {
-            mb.showWindow()
+            mb.showWindow();
         }
     })
 
     mb.on('ready', () => {
-        mb.showWindow()
+        mb.showWindow();
     });
 
     mb.on('after-create-window', () => {
         // Handle the clipboard
         setInterval(() => {
-            const text = clipboard.readText()
-            if (text != lastClipboardText) {
-                lastClipboardText = text
+            const text = clipboard.readText();
+            if (text != lastClipboardText && text != "") {
+                lastClipboardText = text;
                 if (mb.window){
-                    mb.window.webContents.send('newClipboardText', text)
+                    mb.window.webContents.send('newClipboardText', text);
                 }
+            } else {
+                const image = clipboard.readImage();
+                if (!image.isEmpty()) {
+                    imageUrl = image.toDataURL();
+                    if (imageUrl != lastClipboardImage) {
+                        lastClipboardImage = imageUrl;
+                        if (mb.window){
+                            mb.window.webContents.send('newClipboardImage', imageUrl);
+                        } 
+                    }
+                } 
             }
         }, 100);
     });
@@ -93,3 +105,9 @@ app.on('ready', () => {
 app.on('will-quit', () => {
     globalShortcut.unregisterAll()
 })
+
+// ipcMain
+ipcMain.on('pasteImageInTheClipboard', async (event, content) => {
+    image = nativeImage.createFromDataURL(content);
+    clipboard.writeImage(image)
+});

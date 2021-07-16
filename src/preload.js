@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld(
     "api", {
         send: (channel, data) => {
             let validChannels = [
+                "pasteImageInTheClipboard"
             ];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -19,7 +20,8 @@ contextBridge.exposeInMainWorld(
         receive: (channel, func) => {
             let validChannels = [
                 "error",
-                "newClipboardText"
+                "newClipboardText",
+                "newClipboardImage"
             ];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender` 
