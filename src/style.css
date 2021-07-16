@@ -40,13 +40,6 @@ li {
     border-radius: 10px;
 }
 
-/* Handle on hover */
-/* ::-webkit-scrollbar-thumb:hover {
-    background: #2f3136; 
-} */
-
-/*  */
-
 p.clipboardText {
     padding: 0 10px 0 10px;
     white-space:pre;
@@ -68,6 +61,53 @@ img.clipboardImage:hover {
     filter: grayscale(50%);
 }
 
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: rgb(214, 214, 214);
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+}
+  
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.3s, fadeout 0.3s 2.5s;
+    animation: fadein 0.3s, fadeout 0.3s 2.5s;
+}
+  
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+  
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+  
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+  
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+
+
 /* Default mode  */
 @media (prefers-color-scheme: light) {}
 
@@ -88,5 +128,10 @@ img.clipboardImage:hover {
     
     p.clipboardText:hover {
         background-color: #424242;
+    }
+
+    #snackbar {
+        background-color: rgb(26, 26, 26);
+        color: gainsboro;
     }
 }

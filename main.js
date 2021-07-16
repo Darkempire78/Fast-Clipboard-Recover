@@ -21,19 +21,48 @@ app.on('ready', () => {
     tray.setTitle("Fast Clipboard Recover")
 	const contextMenu = Menu.buildFromTemplate(
         [
+            {
+                label: "Always on top",
+                type: "checkbox",
+                click: (menuItem, browserWindow, event) => {
+                    if (menuItem.checked) {
+                        mb.showWindow();
+                        mb.window.setAlwaysOnTop(true, 'screen');
+                    } else {
+                        mb.hideWindow();
+                        mb.window.setAlwaysOnTop(false, 'screen');
+                    }
+                }
+            },
+            {
+                label: "Resizable",
+                type: "checkbox",
+                click: (menuItem, browserWindow, event) => {
+                    if (menuItem.checked) {
+                        mb.showWindow();
+                        mb.window.setResizable(true)
+                    } else {
+                        mb.hideWindow();
+                        mb.window.setResizable(false)
+                        size = mb.window.getSize()
+                        store.set("config.width", size[0]);
+                        store.set("config.height", size[1]);
+                    }
+                }
+            },
             { 
-                label: 'Theme', 
+                label: "Theme", 
                 submenu: [
                     { 
-                        label: 'Light', 
-                        type: 'radio',
-                        checked: true ? store.get('config.theme') == 'light' : false,
+                        label: "Light", 
+                        type: "radio",
+                        checked: true ? store.get("config.theme") == "light" : false,
                         click: handleThemeClick
                     },
                     { 
-                        label: 'Dark', 
-                        type: 'radio',
-                        checked: true ? store.get('config.theme') == 'dark' : false,
+                        label: "Dark", 
+                        type: "radio",
+                        checked: true ? store.get("config.theme") == "dark" : false,
                         click: handleThemeClick
                     }
                 ]
@@ -49,8 +78,8 @@ app.on('ready', () => {
         tray: tray,
         browserWindow: {
             title: "Fast Clipboard Recover",
-            width: 450,
-            height: 450,
+            width: store.get("config.width") ? store.get("config.width") : 450,
+            height: store.get("config.height") ? store.get("config.height") : 450,
             resizable: false,
             webPreferences: {
                 contextIsolation: true,

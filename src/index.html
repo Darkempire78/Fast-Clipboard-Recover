@@ -3,17 +3,21 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <ul id="clipboardContainer">
-        </ul>           
+        <ul id="clipboardContainer"></ul>
+        <div id="snackbar">Copied...</div>          
     </body>
 
     <script>
-        // window.api.send('updateSettings', {
-        //         user: user, 
-        //         server: server,
-        //         theme: theme
-        //     })
-    
+        
+        function showSnackbar() {
+            // Get the snackbar DIV
+            let x = document.getElementById("snackbar");
+            // Add the "show" class to DIV
+            x.className = "show";
+            // After 3 seconds, remove the show class from DIV
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 1000);
+        }
+
     // ipcRenderer
         window.api.receive('newClipboardText', (content) => {
             let ul = document.getElementById("clipboardContainer");
@@ -22,6 +26,7 @@
             let p = document.createElement("p");
             p.onclick = () => {
                 navigator.clipboard.writeText(content)
+                showSnackbar()
             }
             p.classList = ["clipboardText"]
             p.innerHTML = content.replace(/&/g, '&amp;')
@@ -42,6 +47,7 @@
             img.setAttribute("src", content);
             img.onclick = () => {
                 window.api.send('pasteImageInTheClipboard', content)
+                showSnackbar()
             }
             li.appendChild(img);
             li.appendChild(hr);
