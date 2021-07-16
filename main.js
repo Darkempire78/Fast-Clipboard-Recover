@@ -14,7 +14,7 @@ appAutoLaunch.isEnabled().then((isEnabled) => store.set('startOnStartup', isEnab
 let mb;
 let lastClipboardText;
 let lastClipboardImage;
-const iconPath = path.join(__dirname, "icons", "clipboardLight.png");
+const iconPath = nativeTheme.shouldUseDarkColors ? path.join(__dirname, "icons", "clipboardLight.png") : path.join(__dirname, "icons", "clipboardDark.png");
 
 const handleThemeClick = (menuItem, browserWindow, event) => {
     newTheme = menuItem.label.toLowerCase();
@@ -25,10 +25,10 @@ const handleThemeClick = (menuItem, browserWindow, event) => {
 const handlePositionClick = (menuItem, browserWindow, event) => {
     newPosition = menuItem.label;
     store.set("config.position", newPosition);
-    console.log(mb.positioner)
-    console.log("-----------")
-    console.log(mb)
-    mb.positioner =newPosition
+    // console.log(mb.positioner)
+    // console.log("-----------")
+    // console.log(mb)
+    // mb.positioner =newPosition
 }
 
 app.on('ready', () => {
@@ -141,11 +141,14 @@ app.on('ready', () => {
         index: path.join(__dirname, "src", "index.html"),
         tray: tray,
         windowPosition: "bottomLeft",
+        tooltip: "Fast Clipboard Recover",
         browserWindow: {
             title: "Fast Clipboard Recover",
             width: store.get("config.width") ? store.get("config.width") : 450,
             height: store.get("config.height") ? store.get("config.height") : 450,
             resizable: false,
+            // transparent: true,
+            // frame: false,
             webPreferences: {
                 contextIsolation: true,
                 enableRemoteModule: false,
@@ -169,8 +172,6 @@ app.on('ready', () => {
 
     mb.on('ready', () => {
         mb.showWindow();
-        // Set the hover text for the tray icon
-        mb.tray.setToolTip("Fast Clipboard Recover")
     });
 
     mb.on('after-create-window', () => {
