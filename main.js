@@ -1,9 +1,15 @@
 const { app, nativeTheme, globalShortcut, clipboard, Tray, Menu, nativeImage, ipcMain, shell } = require('electron');
 const { menubar } = require("menubar");
-const path = require('path');
 const Store = require('electron-store');
+const AutoLaunch = require('auto-launch');
+const path = require('path');
 
 const store = new Store();
+const appAutoLaunch = new AutoLaunch({
+    name: "Fast Clipboard Recover",
+    path: app.getPath('exe')
+})
+appAutoLaunch.isEnabled().then((isEnabled) => store.set('startOnStartup', isEnabled))
 
 let mb;
 let lastClipboardText;
@@ -14,6 +20,15 @@ const handleThemeClick = (menuItem, browserWindow, event) => {
     newTheme = menuItem.label.toLowerCase();
     store.set("config.theme", newTheme);
     nativeTheme.themeSource = newTheme;
+}
+
+const handlePositionClick = (menuItem, browserWindow, event) => {
+    newPosition = menuItem.label;
+    store.set("config.position", newPosition);
+    console.log(mb.positioner)
+    console.log("-----------")
+    console.log(mb)
+    mb.positioner =newPosition
 }
 
 app.on('ready', () => {
@@ -56,6 +71,26 @@ app.on('ready', () => {
                     }
                 }
             },
+            {
+                label: "Position", 
+                submenu: [
+                    { label: "bottomLeft", type: "radio", checked: store.get("config.position") && store.get("config.position") == "bottomLeft" ? true : false, click: handlePositionClick },
+                    { label: "trayLeft", type: "radio", checked: store.get("config.position") == "trayLeft" ? true : false, click: handlePositionClick },
+                    { label: "trayBottomLeft", type: "radio", checked: store.get("config.position") == "trayBottomLeft" ? true : false, click: handlePositionClick },
+                    { label: "trayRight", type: "radio", checked: store.get("config.position") == "trayRight" ? true : false, click: handlePositionClick },
+                    { label: "trayBottomRight", type: "radio", checked: store.get("config.position") == "trayBottomRight" ? true : false, click: handlePositionClick },
+                    { label: "trayCenter", type: "radio", checked: store.get("config.position") == "trayCenter" ? true : false, click: handlePositionClick },
+                    { label: "trayBottomCenter", type: "radio", checked: store.get("config.position") == "trayBottomCenter" ? true : false, click: handlePositionClick },
+                    { label: "topLeft", type: "radio", checked: store.get("config.position") == "topLeft" ? true : false, click: handlePositionClick },
+                    { label: "topRight", type: "radio", checked: store.get("config.position") == "topRight" ? true : false, click: handlePositionClick },
+                    { label: "bottomRight", type: "radio", checked: store.get("config.position") == "bottomRight" ? true : false, click: handlePositionClick },
+                    { label: "topCenter", type: "radio", checked: store.get("config.position") == "topCenter" ? true : false, click: handlePositionClick },
+                    { label: "bottomCenter", type: "radio", checked: store.get("config.position") == "bottomCenter" ? true : false, click: handlePositionClick },
+                    { label: "leftCenter", type: "radio", checked: store.get("config.position") == "leftCenter" ? true : false, click: handlePositionClick },
+                    { label: "rightCenter", type: "radio", checked: store.get("config.position") == "rightCenter" ? true : false, click: handlePositionClick },
+                    { label: "center", type: "radio", checked: store.get("config.position") == "center" ? true : false, click: handlePositionClick },
+                ]
+            },
             { 
                 label: "Theme", 
                 submenu: [
@@ -72,6 +107,30 @@ app.on('ready', () => {
                         click: handleThemeClick
                     }
                 ]
+            },
+            {
+                label: 'Open On Startup',
+                click: () => {
+                    appAutoLaunch.isEnabled().then((isEnabled) => {
+                        if (isEnabled) {
+                            appAutoLaunch.disable();
+                            store.set('startOnStartup', false);
+                        } else {
+                            appAutoLaunch.enable();
+                            store.set('startOnStartup', true);
+                        }
+                    })
+                    .catch((err) => {});
+                },
+                type: 'checkbox',
+                checked: store.get('startOnStartup')
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Exit',
+                role: 'quit'
             }
 	    ]
     );
@@ -80,8 +139,8 @@ app.on('ready', () => {
     mb = menubar({
         app: app,
         index: path.join(__dirname, "src", "index.html"),
-        windowPosition: "trayBottomRight",
         tray: tray,
+        windowPosition: "bottomLeft",
         browserWindow: {
             title: "Fast Clipboard Recover",
             width: store.get("config.width") ? store.get("config.width") : 450,
@@ -93,7 +152,7 @@ app.on('ready', () => {
                 enableRemoteModule: false,
                 preload: path.join(__dirname, "src", "preload.js"),
             },
-        }
+        },
     });
 
     // Theme
@@ -110,6 +169,8 @@ app.on('ready', () => {
 
     mb.on('ready', () => {
         mb.showWindow();
+        // Set the hover text for the tray icon
+        mb.tray.setToolTip("Fast Clipboard Recover")
     });
 
     mb.on('after-create-window', () => {
