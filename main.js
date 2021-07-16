@@ -1,4 +1,4 @@
-const { app, nativeTheme, globalShortcut, clipboard, Tray, Menu, nativeImage, ipcMain } = require('electron');
+const { app, nativeTheme, globalShortcut, clipboard, Tray, Menu, nativeImage, ipcMain, shell } = require('electron');
 const { menubar } = require("menubar");
 const path = require('path');
 const Store = require('electron-store');
@@ -22,6 +22,13 @@ app.on('ready', () => {
 	const contextMenu = Menu.buildFromTemplate(
         [
             {
+                label: "GitHub",
+                type: "normal",
+                click: (menuItem, browserWindow, event) => {
+                    shell.openExternal("https://github.com/Darkempire78/Fast-Clipboard-Recover")
+                }
+            },
+            {
                 label: "Always on top",
                 type: "checkbox",
                 click: (menuItem, browserWindow, event) => {
@@ -42,7 +49,6 @@ app.on('ready', () => {
                         mb.showWindow();
                         mb.window.setResizable(true)
                     } else {
-                        mb.hideWindow();
                         mb.window.setResizable(false)
                         size = mb.window.getSize()
                         store.set("config.width", size[0]);
