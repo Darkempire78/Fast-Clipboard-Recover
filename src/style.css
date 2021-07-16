@@ -57,3 +57,26 @@ p.clipboardText {
 p.clipboardText:hover {
     background-color: gainsboro;
 }
+
+/* Default mode  */
+@media (prefers-color-scheme: light) {}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+
+    body {
+        background-color: #2c2c2c;
+    }
+
+    hr {
+        border-color: rgb(136 136 136);
+    }
+
+    p.clipboardText {
+        color: gainsboro;
+    }
+    
+    p.clipboardText:hover {
+        background-color: #424242;
+    }
+}

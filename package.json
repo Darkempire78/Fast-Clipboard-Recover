@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "electron": "^13.1.6",
+        "electron-store": "^8.0.0",
         "menubar": "^9.0.5"
     }
 }
