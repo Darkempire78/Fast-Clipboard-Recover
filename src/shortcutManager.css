@@ -1,0 +1,21 @@
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    margin: 10px;
+    background-color: whitesmoke;
+}
+
+h2#title {
+    text-align: center;
+}
+
+/* Default mode  */
+@media (prefers-color-scheme: light) {}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+
+    body {
+        background-color: #2c2c2c;
+        color: gainsboro;
+    }
+}

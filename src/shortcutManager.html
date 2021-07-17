@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="shortcutManager.css">
+    </head>
+    <body>
+        <h2 id="title">Shortcut Manager</h2>
+        <hr>
+        <label for="openHideWindow">Open/hide the window</label>
+        <div>
+            <input type="text" name="openHideWindow" id="openHideWindow">
+            <div>Edit</div>
+        </div>
+    </body>
+
+    <script>
+        let textarea = document.getElementById("openHideWindow");
+        textarea.addEventListener('keydown', (e) => {
+            textarea.value += e.key
+        });
+    </script>
+</html>

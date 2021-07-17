@@ -1,4 +1,4 @@
-const { app, nativeTheme, globalShortcut, clipboard, Tray, Menu, nativeImage, ipcMain, shell } = require('electron');
+const { app, nativeTheme, globalShortcut, clipboard, Tray, Menu, nativeImage, ipcMain, shell, BrowserWindow, dialog } = require('electron');
 const { menubar } = require("menubar");
 const Store = require('electron-store');
 const AutoLaunch = require('auto-launch');
@@ -16,32 +16,29 @@ let lastClipboardText;
 let lastClipboardImage;
 const iconPath = nativeTheme.shouldUseDarkColors ? path.join(__dirname, "icons", "clipboardLight.png") : path.join(__dirname, "icons", "clipboardDark.png");
 
-const handleThemeClick = (menuItem, browserWindow, event) => {
-    newTheme = menuItem.label.toLowerCase();
-    store.set("config.theme", newTheme);
-    nativeTheme.themeSource = newTheme;
-}
-
-const handlePositionClick = (menuItem, browserWindow, event) => {
-    newPosition = menuItem.label;
-    store.set("config.position", newPosition);
-    // console.log(mb.positioner)
-    // console.log("-----------")
-    // console.log(mb)
-    // mb.positioner =newPosition
-}
-
 app.on('ready', () => {
     const tray = new Tray(iconPath);
     tray.setTitle("Fast Clipboard Recover")
 	const contextMenu = Menu.buildFromTemplate(
         [
+            
             {
-                label: "GitHub",
-                type: "normal",
-                click: (menuItem, browserWindow, event) => {
-                    shell.openExternal("https://github.com/Darkempire78/Fast-Clipboard-Recover")
+                label: "About",
+                click: () => {
+                    dialog.showMessageBox({
+                        title: "Fast Clipboard Recover - About",
+                        message: `A fluent open source application to recover your copy-paste easily.\n\nVersion: ${process.env.npm_package_version}\nGitHub: https://github.com/Darkempire78/Fast-Clipboard-Recover`,
+                        icon: path.join(__dirname, "icons", "clipboardDark.png"),
+                        buttons: ["GitHub Repository", "OK"]
+                    }).then(result => {
+                        if (result.response === 0) {
+                            shell.openExternal("https://github.com/Darkempire78/Fast-Clipboard-Recover")
+                        }
+                    });
                 }
+            },
+            {
+                type: 'separator'
             },
             {
                 label: "Always on top",
@@ -69,6 +66,13 @@ app.on('ready', () => {
                         store.set("config.width", size[0]);
                         store.set("config.height", size[1]);
                     }
+                }
+            },
+            {
+                label: "Shortcuts",
+                type: "normal",
+                click: (menuItem, browserWindow, event) => {
+                    createShortcutManager()
                 }
             },
             {
@@ -144,9 +148,11 @@ app.on('ready', () => {
         tooltip: "Fast Clipboard Recover",
         browserWindow: {
             title: "Fast Clipboard Recover",
+            icon: iconPath,
             width: store.get("config.width") ? store.get("config.width") : 450,
             height: store.get("config.height") ? store.get("config.height") : 450,
             resizable: false,
+            skipTaskbar: true,
             // transparent: true,
             // frame: false,
             webPreferences: {
@@ -208,3 +214,35 @@ ipcMain.on('pasteImageInTheClipboard', async (event, content) => {
     image = nativeImage.createFromDataURL(content);
     clipboard.writeImage(image)
 });
+
+const handleThemeClick = (menuItem, browserWindow, event) => {
+    newTheme = menuItem.label.toLowerCase();
+    store.set("config.theme", newTheme);
+    nativeTheme.themeSource = newTheme;
+}
+
+const handlePositionClick = (menuItem, browserWindow, event) => {
+    newPosition = menuItem.label;
+    store.set("config.position", newPosition);
+    // console.log(mb.positioner)
+    // console.log("-----------")
+    // console.log(mb)
+    // mb.positioner =newPosition
+}
+
+function createShortcutManager() {
+    shortcutManager = new BrowserWindow({
+        title: "Fast Clipboard Recover - Shortcut Manager",
+        icon: path.join(__dirname, "icons", "clipboardDark.png"), // there is no dark mode for titlebar
+        parent: mb.window,
+        modal: true,
+        alwaysOnTop: true,
+        autoHideMenuBar: true,
+        width: 600,
+        height: 400,
+        minWidth: 400,
+        minHeight: 300,
+    });
+    shortcutManager.loadURL(path.join(__dirname, "src", "shortcutManager.html"))
+
+}
