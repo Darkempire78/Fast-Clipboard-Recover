@@ -5,17 +5,33 @@
     <body>
         <h2 id="title">Shortcut Manager</h2>
         <hr>
-        <label for="openHideWindow">Open/hide the window</label>
+        FAIRE LA MEME CHOSE THE "EVERYTHING"
         <div>
-            <input type="text" name="openHideWindow" id="openHideWindow">
-            <div>Edit</div>
+            <label for="openHideWindow">Open/hide the window</label>
+            <input type="text" name="openHideWindow" id="openHideWindow" keydown='test()'>
         </div>
+        <div>
+            <label for="alwaysOnTop">Always on top</label>
+            <input type="text" name="alwaysOnTop" id="alwaysOnTop">
+        </div>
+        <button>Save</button>
     </body>
 
     <script>
-        let textarea = document.getElementById("openHideWindow");
-        textarea.addEventListener('keydown', (e) => {
-            textarea.value += e.key
-        });
+        function test() {
+            console.log("test")
+        }
+        document.getElementById("openHideWindow").addEventListener('keydown', logKeyDown);
+        document.getElementById("alwaysOnTop").addEventListener('keydown', logKeyDown);
+        document.getElementById("openHideWindow").addEventListener('keyup', logKeyUp);
+        document.getElementById("alwaysOnTop").addEventListener('keyup', logKeyUp);
+
+        function logKeyDown(e) {
+            e.srcElement.value = `${e.srcElement.value.slice(0, -1)}${e.key} + `;
+        }
+
+        function logKeyUp(e) {
+            e.srcElement.value = e.srcElement.value.slice(0, -1);
+        }
     </script>
 </html>

@@ -4,7 +4,13 @@ const Store = require('electron-store');
 const AutoLaunch = require('auto-launch');
 const path = require('path');
 
-const store = new Store();
+const store = new Store({
+    defaults: {
+        startOnStartup: true,
+        keepHistory: false,
+        history: []
+    }}  
+);
 const appAutoLaunch = new AutoLaunch({
     name: "Fast Clipboard Recover",
     path: app.getPath('exe')
@@ -21,7 +27,6 @@ app.on('ready', () => {
     tray.setTitle("Fast Clipboard Recover")
 	const contextMenu = Menu.buildFromTemplate(
         [
-            
             {
                 label: "About",
                 click: () => {
@@ -68,33 +73,33 @@ app.on('ready', () => {
                     }
                 }
             },
-            {
-                label: "Shortcuts",
-                type: "normal",
-                click: (menuItem, browserWindow, event) => {
-                    createShortcutManager()
-                }
-            },
-            {
-                label: "Position", 
-                submenu: [
-                    { label: "bottomLeft", type: "radio", checked: store.get("config.position") && store.get("config.position") == "bottomLeft" ? true : false, click: handlePositionClick },
-                    { label: "trayLeft", type: "radio", checked: store.get("config.position") == "trayLeft" ? true : false, click: handlePositionClick },
-                    { label: "trayBottomLeft", type: "radio", checked: store.get("config.position") == "trayBottomLeft" ? true : false, click: handlePositionClick },
-                    { label: "trayRight", type: "radio", checked: store.get("config.position") == "trayRight" ? true : false, click: handlePositionClick },
-                    { label: "trayBottomRight", type: "radio", checked: store.get("config.position") == "trayBottomRight" ? true : false, click: handlePositionClick },
-                    { label: "trayCenter", type: "radio", checked: store.get("config.position") == "trayCenter" ? true : false, click: handlePositionClick },
-                    { label: "trayBottomCenter", type: "radio", checked: store.get("config.position") == "trayBottomCenter" ? true : false, click: handlePositionClick },
-                    { label: "topLeft", type: "radio", checked: store.get("config.position") == "topLeft" ? true : false, click: handlePositionClick },
-                    { label: "topRight", type: "radio", checked: store.get("config.position") == "topRight" ? true : false, click: handlePositionClick },
-                    { label: "bottomRight", type: "radio", checked: store.get("config.position") == "bottomRight" ? true : false, click: handlePositionClick },
-                    { label: "topCenter", type: "radio", checked: store.get("config.position") == "topCenter" ? true : false, click: handlePositionClick },
-                    { label: "bottomCenter", type: "radio", checked: store.get("config.position") == "bottomCenter" ? true : false, click: handlePositionClick },
-                    { label: "leftCenter", type: "radio", checked: store.get("config.position") == "leftCenter" ? true : false, click: handlePositionClick },
-                    { label: "rightCenter", type: "radio", checked: store.get("config.position") == "rightCenter" ? true : false, click: handlePositionClick },
-                    { label: "center", type: "radio", checked: store.get("config.position") == "center" ? true : false, click: handlePositionClick },
-                ]
-            },
+            // {
+            //     label: "Shortcuts",
+            //     type: "normal",
+            //     click: (menuItem, browserWindow, event) => {
+            //         createShortcutManager()
+            //     }
+            // },
+            // {
+            //     label: "Position", 
+            //     submenu: [
+            //         { label: "bottomLeft", type: "radio", checked: store.get("config.position") && store.get("config.position") == "bottomLeft" ? true : false, click: handlePositionClick },
+            //         { label: "trayLeft", type: "radio", checked: store.get("config.position") == "trayLeft" ? true : false, click: handlePositionClick },
+            //         { label: "trayBottomLeft", type: "radio", checked: store.get("config.position") == "trayBottomLeft" ? true : false, click: handlePositionClick },
+            //         { label: "trayRight", type: "radio", checked: store.get("config.position") == "trayRight" ? true : false, click: handlePositionClick },
+            //         { label: "trayBottomRight", type: "radio", checked: store.get("config.position") == "trayBottomRight" ? true : false, click: handlePositionClick },
+            //         { label: "trayCenter", type: "radio", checked: store.get("config.position") == "trayCenter" ? true : false, click: handlePositionClick },
+            //         { label: "trayBottomCenter", type: "radio", checked: store.get("config.position") == "trayBottomCenter" ? true : false, click: handlePositionClick },
+            //         { label: "topLeft", type: "radio", checked: store.get("config.position") == "topLeft" ? true : false, click: handlePositionClick },
+            //         { label: "topRight", type: "radio", checked: store.get("config.position") == "topRight" ? true : false, click: handlePositionClick },
+            //         { label: "bottomRight", type: "radio", checked: store.get("config.position") == "bottomRight" ? true : false, click: handlePositionClick },
+            //         { label: "topCenter", type: "radio", checked: store.get("config.position") == "topCenter" ? true : false, click: handlePositionClick },
+            //         { label: "bottomCenter", type: "radio", checked: store.get("config.position") == "bottomCenter" ? true : false, click: handlePositionClick },
+            //         { label: "leftCenter", type: "radio", checked: store.get("config.position") == "leftCenter" ? true : false, click: handlePositionClick },
+            //         { label: "rightCenter", type: "radio", checked: store.get("config.position") == "rightCenter" ? true : false, click: handlePositionClick },
+            //         { label: "center", type: "radio", checked: store.get("config.position") == "center" ? true : false, click: handlePositionClick },
+            //     ]
+            // },
             { 
                 label: "Theme", 
                 submenu: [
@@ -113,7 +118,22 @@ app.on('ready', () => {
                 ]
             },
             {
-                label: 'Open On Startup',
+                label: 'Keep history',
+                type: 'checkbox',
+                checked: store.get('keepHistory'),
+                click: (menuItem, browserWindow, event) => {
+                    if (menuItem.checked) {
+                        store.set('keepHistory', true);
+                    } else {
+                        store.set('keepHistory', false);
+                        store.set('history', [])
+                    }
+                }    
+            },
+            {
+                label: 'Open on startup',
+                type: 'checkbox',
+                checked: store.get('startOnStartup'),
                 click: () => {
                     appAutoLaunch.isEnabled().then((isEnabled) => {
                         if (isEnabled) {
@@ -125,9 +145,7 @@ app.on('ready', () => {
                         }
                     })
                     .catch((err) => {});
-                },
-                type: 'checkbox',
-                checked: store.get('startOnStartup')
+                }    
             },
             {
                 type: 'separator'
@@ -178,16 +196,26 @@ app.on('ready', () => {
 
     mb.on('ready', () => {
         mb.showWindow();
+        // console.log(app.getPath('userData'))
     });
 
     mb.on('after-create-window', () => {
+        // Find history
+        if (store.get("keepHistory")) {
+            let history = store.get('history') ? store.get('history') : [];
+            console.log(history)
+            for (const i of history) {
+                sendClipboardElement(i[0], i[1], true)
+            }
+        }
         // Handle the clipboard
+        lastClipboardText = clipboard.readText();
         setInterval(() => {
             const text = clipboard.readText();
             if (text != lastClipboardText && text != "") {
                 lastClipboardText = text;
                 if (mb.window){
-                    mb.window.webContents.send('newClipboardText', text);
+                    sendClipboardElement('newClipboardText', text, false)
                 }
             } else {
                 const image = clipboard.readImage();
@@ -196,7 +224,7 @@ app.on('ready', () => {
                     if (imageUrl != lastClipboardImage) {
                         lastClipboardImage = imageUrl;
                         if (mb.window){
-                            mb.window.webContents.send('newClipboardImage', imageUrl);
+                            sendClipboardElement('newClipboardText', text, false)
                         } 
                     }
                 } 
@@ -215,34 +243,47 @@ ipcMain.on('pasteImageInTheClipboard', async (event, content) => {
     clipboard.writeImage(image)
 });
 
+function sendClipboardElement(type, content, isHistory) {
+    // Send
+    mb.window.webContents.send(type, content);
+    // Log history
+    if (!isHistory) {
+        if (store.get('keepHistory')) {
+            let history = store.get('history') ? store.get('history') : [];
+            history.push(
+                [
+                    type, 
+                    content
+                ]
+            )
+            store.set('history', history)
+        }
+    }
+}
+
 const handleThemeClick = (menuItem, browserWindow, event) => {
     newTheme = menuItem.label.toLowerCase();
     store.set("config.theme", newTheme);
     nativeTheme.themeSource = newTheme;
 }
 
-const handlePositionClick = (menuItem, browserWindow, event) => {
-    newPosition = menuItem.label;
-    store.set("config.position", newPosition);
-    // console.log(mb.positioner)
-    // console.log("-----------")
-    // console.log(mb)
-    // mb.positioner =newPosition
-}
+// const handlePositionClick = (menuItem, browserWindow, event) => {
+//     newPosition = menuItem.label;
+//     store.set("config.position", newPosition);
+// }
 
-function createShortcutManager() {
-    shortcutManager = new BrowserWindow({
-        title: "Fast Clipboard Recover - Shortcut Manager",
-        icon: path.join(__dirname, "icons", "clipboardDark.png"), // there is no dark mode for titlebar
-        parent: mb.window,
-        modal: true,
-        alwaysOnTop: true,
-        autoHideMenuBar: true,
-        width: 600,
-        height: 400,
-        minWidth: 400,
-        minHeight: 300,
-    });
-    shortcutManager.loadURL(path.join(__dirname, "src", "shortcutManager.html"))
-
-}
+// function createShortcutManager() {
+//     shortcutManager = new BrowserWindow({
+//         title: "Fast Clipboard Recover - Shortcut Manager",
+//         icon: path.join(__dirname, "icons", "clipboardDark.png"), // there is no dark mode for titlebar
+//         parent: mb.window,
+//         modal: true,
+//         alwaysOnTop: true,
+//         autoHideMenuBar: true,
+//         width: 600,
+//         height: 400,
+//         minWidth: 400,
+//         minHeight: 300,
+//     });
+//     shortcutManager.loadURL(path.join(__dirname, "src", "shortcutManager.html"))
+// }
