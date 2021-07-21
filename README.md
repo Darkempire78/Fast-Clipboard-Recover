@@ -3,6 +3,10 @@
 # Fast Clipboard Recover
 A fluent open source application to recover your copy-paste easily
 
+## Download
+
+Download Fast Clipboard Recover from [GitHub releases](https://github.com/Darkempire78/Fast-Clipboard-Recover/releases/)
+
 ## Features
 
 **Add a button to open the current repository on github1s**
