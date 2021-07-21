@@ -110,7 +110,7 @@ img.clipboardImage:hover {
 
 
 /* Default mode  */
-@media (prefers-color-scheme: light) {}
+/* @media (prefers-color-scheme: light) {} */
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
