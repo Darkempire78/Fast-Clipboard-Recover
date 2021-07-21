@@ -6,6 +6,7 @@ const path = require('path');
 
 require('update-electron-app')({
     repo: 'Darkempire78/Fast-Clipboard-Recover',
+    updateInterval: '1 hour',
 })
 
 const store = new Store({
