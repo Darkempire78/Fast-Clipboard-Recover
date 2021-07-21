@@ -16,7 +16,11 @@ A fluent open source application to recover your copy-paste easily
 * Keep history when the computer reboot
 * Auto start
 
-<img src="https://github.com/Darkempire78/Fast-Clipboard-Recover/blob/main/Preview.png" width="700"/>
+<img src="https://github.com/Darkempire78/Fast-Clipboard-Recover/blob/main/Preview.png" width="900"/>
+
+## Shortcut
+
+Open/Hide the window : <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>
 
 ## Options
 
