@@ -192,6 +192,9 @@ app.on('ready', () => {
 
     // Theme
     nativeTheme.themeSource = store.get('config.theme') == "light" ? "light" : "dark";
+    if (nativeTheme.themeSource == "dracula") {
+        nativeTheme.themeSource = "dark" // Change to dark for the tray menu
+    }
 
     // create shortcut
 	globalShortcut.register('CommandOrControl+Shift+X', () => {
@@ -284,6 +287,7 @@ const handleThemeClick = (menuItem, browserWindow, event) => {
             name: "dracula",
             enabled: true,
         });
+        nativeTheme.themeSource = "dark" // Change to dark for the tray menu
     } else {
         nativeTheme.themeSource = newTheme;
         mb.window.webContents.send("setCustomTheme", {
