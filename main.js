@@ -106,13 +106,19 @@ app.on('ready', () => {
                     { 
                         label: "Light", 
                         type: "radio",
-                        checked: true ? store.get("config.theme") == "light" : false,
+                        checked: store.get("config.theme") == "light" ? true : false,
                         click: handleThemeClick
                     },
                     { 
                         label: "Dark", 
                         type: "radio",
-                        checked: true ? store.get("config.theme") == "dark" : false,
+                        checked: store.get("config.theme") == "dark" ? true : false,
+                        click: handleThemeClick
+                    },
+                    { 
+                        label: "Dracula", 
+                        type: "radio",
+                        checked: store.get("config.theme") == "dracula" ? true : false,
                         click: handleThemeClick
                     }
                 ]
@@ -185,7 +191,7 @@ app.on('ready', () => {
     });
 
     // Theme
-    nativeTheme.themeSource = store.get('config.theme') || "dark";
+    nativeTheme.themeSource = store.get('config.theme') == "light" ? "light" : "dark";
 
     // create shortcut
 	globalShortcut.register('CommandOrControl+Shift+X', () => {
@@ -203,6 +209,13 @@ app.on('ready', () => {
     });
 
     mb.on('after-create-window', () => {
+        // Custom theme
+        if (store.get('config.theme') == "dracula") {
+            mb.window.webContents.send("setCustomTheme", {
+                name: "dracula",
+                enabled: true,
+            });
+        }
         // Find history
         if (store.get("keepHistory")) {
             let history = store.get('history') ? store.get('history') : [];
@@ -266,7 +279,18 @@ function sendClipboardElement(type, content, isHistory) {
 const handleThemeClick = (menuItem, browserWindow, event) => {
     newTheme = menuItem.label.toLowerCase();
     store.set("config.theme", newTheme);
-    nativeTheme.themeSource = newTheme;
+    if (newTheme == "dracula") {
+        mb.window.webContents.send("setCustomTheme", {
+            name: "dracula",
+            enabled: true,
+        });
+    } else {
+        nativeTheme.themeSource = newTheme;
+        mb.window.webContents.send("setCustomTheme", {
+            name: "dracula",
+            enabled: false,
+        });
+    }
 }
 
 // const handlePositionClick = (menuItem, browserWindow, event) => {

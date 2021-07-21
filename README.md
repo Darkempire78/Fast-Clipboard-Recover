@@ -10,7 +10,7 @@ A fluent open source application to recover your copy-paste easily
 * Handle copy of text
 * Handle copy of image
 * Fast recovering old copy
-* Themes (Light/Dark)
+* Themes (Light/Dark/Dracula)
 * Resizable
 * Always on top
 * Keep history when the computer reboot
@@ -22,9 +22,26 @@ A fluent open source application to recover your copy-paste easily
 
 Open/Hide the window : <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>
 
+## Themes
+
+There are 3 themes (Light/Dark/Dracula)
+
+### Dracula Preview
+
+<img src="Dracula.png" height="300"/>
+
 ## Options
 
 <img src="Options.png"/>
+
+## Release Notes
+
+### 1.1.0
+* New Dracula mode
+* Fix small theme selection issue
+
+### 1.0.0
+* Initial release
 
 ## Discord
 

@@ -1,0 +1,20 @@
+body {
+    background-color: #282a36;
+}
+
+hr {
+    border-color: #bd93f9;
+}
+
+p.clipboardText {
+    color: #f8f8f2;
+}
+
+p.clipboardText:hover {
+    background-color: #44475a;
+}
+
+#snackbar {
+    background-color: #6272a4;
+    color: #f8f8f2;
+}

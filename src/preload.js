@@ -21,7 +21,8 @@ contextBridge.exposeInMainWorld(
             let validChannels = [
                 "error",
                 "newClipboardText",
-                "newClipboardImage"
+                "newClipboardImage",
+                "setCustomTheme"
             ];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender` 

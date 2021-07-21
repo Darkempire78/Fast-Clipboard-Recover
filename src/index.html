@@ -1,6 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="style.css">
+        <link id="draculaTheme" rel="stylesheet" href="customTheme/dracula.css" disabled>
     </head>
     <body>
         <ul id="clipboardContainer"></ul>
@@ -52,6 +53,11 @@
             li.appendChild(img);
             li.appendChild(hr);
             ul.prepend(li);
+        })
+
+        window.api.receive('setCustomTheme', (data) => {
+            let theme = document.getElementById(`${data.name}Theme`);
+            theme.disabled = !data.enabled;
         })
     </script>
 </html>
