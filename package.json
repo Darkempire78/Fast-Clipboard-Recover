@@ -1,17 +1,57 @@
 {
     "name": "fast-clipboard-recover",
+    "productName": "Fast Clipboard Recover",
     "version": "1.0.0",
     "license": "GPL-3.0",
     "description": "A fluent application to recover your copy-paste",
     "author": "https://github.com/Darkempire78",
     "main": "main.js",
     "scripts": {
-        "start": "electron ."
+        "start": "electron-forge start",
+        "package": "electron-forge package",
+        "make": "electron-forge make"
     },
     "dependencies": {
         "auto-launch": "^5.0.5",
-        "electron": "^13.1.6",
+        "electron-squirrel-startup": "^1.0.0",
         "electron-store": "^8.0.0",
         "menubar": "^9.0.5"
+    },
+    "devDependencies": {
+        "@electron-forge/cli": "^6.0.0-beta.58",
+        "@electron-forge/maker-deb": "^6.0.0-beta.58",
+        "@electron-forge/maker-rpm": "^6.0.0-beta.58",
+        "@electron-forge/maker-squirrel": "^6.0.0-beta.58",
+        "@electron-forge/maker-zip": "^6.0.0-beta.58",
+        "electron": "^13.1.7"
+    },
+    "config": {
+        "forge": {
+            "packagerConfig": {
+                "icon": "icons/clipboardDark.ico"
+            },
+            "makers": [
+                {
+                    "name": "@electron-forge/maker-squirrel",
+                    "config": {
+                        "name": "fast_clipboard_recover"
+                    }
+                },
+                {
+                    "name": "@electron-forge/maker-zip",
+                    "platforms": [
+                        "darwin"
+                    ]
+                },
+                {
+                    "name": "@electron-forge/maker-deb",
+                    "config": {}
+                },
+                {
+                    "name": "@electron-forge/maker-rpm",
+                    "config": {}
+                }
+            ]
+        }
     }
 }

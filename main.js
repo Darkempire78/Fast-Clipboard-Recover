@@ -165,6 +165,8 @@ app.on('ready', () => {
         windowPosition: "bottomLeft",
         tooltip: "Fast Clipboard Recover",
         browserWindow: {
+            // x: 0,
+            // y:0,
             title: "Fast Clipboard Recover",
             icon: iconPath,
             width: store.get("config.width") ? store.get("config.width") : 450,
@@ -196,6 +198,7 @@ app.on('ready', () => {
 
     mb.on('ready', () => {
         mb.showWindow();
+        // console.log(mb)
         // console.log(app.getPath('userData'))
     });
 
@@ -203,7 +206,6 @@ app.on('ready', () => {
         // Find history
         if (store.get("keepHistory")) {
             let history = store.get('history') ? store.get('history') : [];
-            console.log(history)
             for (const i of history) {
                 sendClipboardElement(i[0], i[1], true)
             }
