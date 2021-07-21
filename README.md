@@ -44,7 +44,6 @@ There are 3 themes (Light/Dark/Dracula)
 ### 1.1.0
 * New Dracula mode
 * Fix small theme selection issue
-
 ### 1.0.0
 * Initial release
 
