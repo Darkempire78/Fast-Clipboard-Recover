@@ -32,7 +32,7 @@ app.on('ready', () => {
                 click: () => {
                     dialog.showMessageBox({
                         title: "Fast Clipboard Recover - About",
-                        message: `A fluent open source application to recover your copy-paste easily.\n\nVersion: ${process.env.npm_package_version}\nGitHub: https://github.com/Darkempire78/Fast-Clipboard-Recover`,
+                        message: `A fluent open source application to recover your copy-paste easily.\n\nVersion: ${app.getVersion()}\nGitHub: https://github.com/Darkempire78/Fast-Clipboard-Recover`,
                         icon: path.join(__dirname, "icons", "clipboardDark.png"),
                         buttons: ["GitHub Repository", "OK"]
                     }).then(result => {

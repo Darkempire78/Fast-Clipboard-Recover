@@ -38,6 +38,9 @@ There are 3 themes (Light/Dark/Dracula)
 
 ## Release Notes
 
+### 1.1.1
+* Fix unknown version in the about section
+* Fix of the colour of the Dracula theme tray menu
 ### 1.1.0
 * New Dracula mode
 * Fix small theme selection issue
