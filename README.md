@@ -9,8 +9,6 @@ Download Fast Clipboard Recover from [GitHub releases](https://github.com/Darkem
 
 ## Features
 
-**Add a button to open the current repository on github1s**
-
 * Handle copy of text
 * Handle copy of image
 * Fast recovering old copy
