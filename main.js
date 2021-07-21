@@ -4,6 +4,10 @@ const Store = require('electron-store');
 const AutoLaunch = require('auto-launch');
 const path = require('path');
 
+require('update-electron-app')({
+    repo: 'Darkempire78/Fast-Clipboard-Recover',
+})
+
 const store = new Store({
     defaults: {
         startOnStartup: true,
